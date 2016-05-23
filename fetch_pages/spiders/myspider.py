@@ -12,7 +12,6 @@ class ExampleSpider(scrapy.Spider):
     name = "myspider"
 
     start_ruls = []
-    # out_path = None
 
     def __init__(self, url=None, out_path=None, *kargs, **pargs):
         assert url, "Need to set a url."
@@ -34,11 +33,10 @@ class ExampleSpider(scrapy.Spider):
 
         link_list = set()
 
-        # Prepare links.
+        # Prepare links (get unique links, and scipt '/' links).
         for link in response.xpath('//a/@href'):
             link = link.extract()
             if re.match(r'(^\/\w+)|(^\w.+)', link):
-                # yield self.fetch_page(link)                   # Fetch a page.
                 link_list.add(link)
             else:
                 logging.debug(u"*** Skipping url [{}] ***".format(link))

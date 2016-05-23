@@ -9,10 +9,11 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+LOG_LEVEL = 'DEBUG'
 BOT_NAME = 'fetch_pages'
-
 SPIDER_MODULES = ['fetch_pages.spiders']
 NEWSPIDER_MODULE = 'fetch_pages.spiders'
+USER_AGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -55,9 +56,9 @@ NEWSPIDER_MODULE = 'fetch_pages.spiders'
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
-#    'scrapy.telnet.TelnetConsole': None,
-#}
+EXTENSIONS = {
+    'scrapy.telnet.TelnetConsole': None,
+}
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
