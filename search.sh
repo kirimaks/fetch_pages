@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# ./fetch_pages.sh [url] [out_path]
-
 if [[ $1 == '' ]]; then
-    echo "Usage: ./fetch_pages.sh [url]"
-    echo "Example: ./fetch_pages.sh http://google.com/search?q=panda"
+    echo "Search a query in google."
+    echo "Usage: ./search.sh [query]"
+    echo "Example: ./search.sh panda"
     exit
 fi
 
@@ -14,4 +13,4 @@ echo $BASE_DIR
 cd $BASE_DIR
 export PATH
 
-scrapy crawl myspider -a url=$1
+bash ./fetch_pages.sh https://google.com/search?q=$1
