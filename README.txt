@@ -2,6 +2,7 @@
 sudo apt-get install pip
 sudo apt-get install git
 sudo apt-get install realpath   -- Need for run script from independent directory.
+sudo apt-get install python-mysqldb
 
 -- Install scrapy
 sudo pip install scrapy

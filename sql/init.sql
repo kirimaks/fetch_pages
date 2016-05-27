@@ -14,3 +14,11 @@ CREATE TABLE search_space(
     url         VARCHAR(1000) NOT NULL,
     FOREIGN KEY (search_id) REFERENCES search(search_id) ON DELETE CASCADE
 )ENGINE=INNODB;
+
+CREATE FULLTEXT INDEX content_search ON search_space(content);
+
+CREATE VIEW tables_size_view AS
+    SELECT TABLE_NAME AS 'TableName', round(((data_length + index_length) / 1024 / 1024), 2) AS MbSize
+    FROM information_schema.TABLES  
+    WHERE table_schema = 'parsed_data' ORDER BY MbSize DESC;
+;
