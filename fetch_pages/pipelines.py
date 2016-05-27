@@ -29,17 +29,17 @@ class FetchPagesPipeline(object):
     def process_item(self, item, spider):
         logging.debug("*** Store page ***, sid = {}".format(self.search_id))
 
-        escaped_body = item['body'].replace('\'', '\"')
-        escaped_url = item['url'].replace('\'', '\\\'')
-
         query = """
             INSERT INTO search_space(search_id, url, content)
-                VALUES({sid}, '{url}', '{body}')
-        """.format(sid=self.search_id,
-                   url=escaped_url,
-                   body=escaped_body)
+                VALUES(%s, %s, %s)
+        """
 
-        self.cursor.execute(query)
+        sid = self.search_id
+        url = item['url']
+        body = item['body']
+
+        self.cursor.execute(query, (sid, url, body))
+
         self.mysql.commit()
 
     def get_search_id(self, search_string):

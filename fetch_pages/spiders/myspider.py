@@ -5,6 +5,19 @@ import re
 from scrapy.http import Request
 from urlparse import urlparse
 
+exclude_url = re.compile(r'(jpg|png|gif)$', flags=re.IGNORECASE)
+include_url = re.compile(r'^[\w\/]{2,}')
+
+
+def validate_url(link):
+    """ Checking if the link is valid. """
+
+    if not exclude_url.search(link):
+        if include_url.match(link):
+            return True
+
+    return False
+
 
 class SomeSpider(scrapy.Spider):
     name = "myspider"
@@ -22,18 +35,6 @@ class SomeSpider(scrapy.Spider):
         parser = urlparse(url)
         self.netloc = "{}://{}/".format(parser.scheme, parser.netloc)
 
-        # Link pattern.
-        self.link_pattern = re.compile(r'(^\/\w+)|(^\w.+)')
-
-    def check_link(self, link):
-        # Here can check if the link is valid.
-
-        link = link.rstrip('/')
-        if self.link_pattern.match(link):
-            return True
-
-        return False
-
     def parse(self, response):
         link_list = set()
 
@@ -42,7 +43,7 @@ class SomeSpider(scrapy.Spider):
 
             link = link.extract()   # Get the link as text.
 
-            if self.check_link(link):
+            if validate_url(link):
                 if not link.startswith(u"http"):
                     link = self.netloc + link.lstrip('/')
                 link_list.add(link)
