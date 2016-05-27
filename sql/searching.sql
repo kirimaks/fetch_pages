@@ -1,6 +1,8 @@
-DROP DATABASE IF exists parsed_data;
-CREATE DATABASE parsed_data;
-USE parsed_data;
+--------- CLEAN --------------------------
+DROP VIEW IF EXISTS tables_size_view;
+DROP TABLE IF EXISTS search_space;
+DROP TABLE IF EXISTS search;
+------------------------------------------
 
 CREATE TABLE search(
     search_id       INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -14,7 +16,6 @@ CREATE TABLE search_space(
     url         VARCHAR(1000) NOT NULL,
     FOREIGN KEY (search_id) REFERENCES search(search_id) ON DELETE CASCADE
 )ENGINE=INNODB;
-
 CREATE FULLTEXT INDEX content_search ON search_space(content);
 
 CREATE VIEW tables_size_view AS
