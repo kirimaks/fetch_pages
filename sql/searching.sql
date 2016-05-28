@@ -1,5 +1,4 @@
 --  ----- CLEAN --------------------------
-DROP VIEW IF EXISTS tables_size_view;
 DROP TABLE IF EXISTS search_space;
 DROP TABLE IF EXISTS search;
 --  --------------------------------------

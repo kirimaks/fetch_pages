@@ -24,7 +24,7 @@ CREATE TABLE office_holders(
 
 -- ----- VIEWS -------
 -- Number of candidates by state.
-CREATE VIEW candidates_in_state_view AS
+CREATE or replace VIEW candidates_in_state_view AS
     SELECT states.name AS StateName, count(office_holders.id) AS OfficeHolders
         FROM states JOIN zip_codes ON zip_codes.state = states.id 
             JOIN office_holders ON office_holders.zip_code_id = zip_codes.id  
@@ -32,7 +32,7 @@ CREATE VIEW candidates_in_state_view AS
 ;
 
 -- Number of candidates by zip_code.
-CREATE VIEW candidates_by_zip_code_view AS
+CREATE or replace VIEW candidates_by_zip_code_view AS
     SELECT code AS ZipCode, count(office_holders.id) AS OfficeHolders
         FROM zip_codes JOIN office_holders ON zip_codes.id = office_holders.zip_code_id 
     GROUP BY zip_codes.code

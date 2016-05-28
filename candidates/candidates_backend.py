@@ -1,7 +1,7 @@
 import MySQLdb
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
@@ -21,7 +21,7 @@ class CandidatesBackend(object):
 
         # Make new state.
         if not state_id:
-            logging.debug("Create new state [{}]".format(state))
+            logging.info("Create new state [{}]".format(state))
             query = "INSERT INTO states(name) VALUES('{}')".format(state)
             self.cursor.execute(query)
             self.db.commit()
@@ -41,7 +41,7 @@ class CandidatesBackend(object):
             # Get or create state id.
             state_id = self.get_state_id(state)
 
-            logging.debug("Create zip code [{}]".format(zip_code))
+            logging.info("Create zip code [{}]".format(zip_code))
             query = """INSERT INTO zip_codes(code, state)
                         VALUES({}, {})""".format(zip_code, state_id)
             self.cursor.execute(query)

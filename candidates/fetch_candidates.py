@@ -21,4 +21,5 @@ with open(args.input_file) as in_file:
     for row in zip_reader:
         zip_code = row[0]
         state = row[3]
-        candidateParser.parse_zip(state, zip_code)
+        if zip_code and state:
+            candidateParser.parse_zip(state, zip_code)
