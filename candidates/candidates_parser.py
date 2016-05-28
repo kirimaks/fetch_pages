@@ -8,16 +8,14 @@ log = logging.getLogger(__name__)
 
 
 class CandidatesParser(object):
-    def __init__(self, state, city):
+    def __init__(self):
         self.api_key = 'e1819095ba39161837e6b61942b34ba5'
-        self.backend = CandidatesBackend(state, city)
+        self.backend = CandidatesBackend()
         self.zip_url = "http://api.votesmart.org/Officials.getByZip?\
                         key={api_key}&zip5={zip_code}"
 
-    def parse_zip(self, zip_code):
-
-        zip_code_id = self.backend.get_zip_code(zip_code)
-
+    def parse_zip(self, state, zip_code):
+        zip_code_id = self.backend.get_zip_code(zip_code, state)
         url = self.zip_url.format(api_key=self.api_key, zip_code=zip_code)
 
         resp = requests.get(url)
@@ -29,12 +27,6 @@ class CandidatesParser(object):
             log.debug("Processing for candidate: [{}]".format(candidate_id))
             first_name = candidate.find('firstName').get_text()
             last_name = candidate.find('lastName').get_text()
-
-            log.debug(u"{:10}first_name: {}".format('', first_name))
-            log.debug(u"{:10}last_name: {}".format('', last_name))
-
-            assert first_name, "Frist name is empty"
-            assert last_name, "Last name is empty"
 
             self.backend.save_candidate(candidate_id, first_name,
                                         last_name, zip_code_id)

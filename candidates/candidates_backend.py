@@ -6,13 +6,10 @@ log = logging.getLogger(__name__)
 
 
 class CandidatesBackend(object):
-    def __init__(self, state, city):
+    def __init__(self):
         logging.debug("Open MySQL")
         self.db = MySQLdb.connect("localhost", "root", "1234", "parsed_data")
         self.cursor = self.db.cursor()
-
-        # Get or create state id.
-        self.state_id = self.get_state_id(state)
 
     def __del__(self):
         self.db.close()
@@ -33,7 +30,7 @@ class CandidatesBackend(object):
 
         return state_id[0]
 
-    def get_zip_code(self, zip_code):
+    def get_zip_code(self, zip_code, state):
         query = """SELECT id FROM zip_codes
                         WHERE code = '{}'""".format(zip_code)
         self.cursor.execute(query)
@@ -41,9 +38,12 @@ class CandidatesBackend(object):
 
         # Create zip code.
         if not zip_code_id:
+            # Get or create state id.
+            state_id = self.get_state_id(state)
+
             logging.debug("Create zip code [{}]".format(zip_code))
             query = """INSERT INTO zip_codes(code, state)
-                        VALUES({}, {})""".format(zip_code, self.state_id)
+                        VALUES({}, {})""".format(zip_code, state_id)
             self.cursor.execute(query)
             self.db.commit()
             self.cursor.execute("SELECT LAST_INSERT_ID()")

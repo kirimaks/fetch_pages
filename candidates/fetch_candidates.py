@@ -1,27 +1,24 @@
 #!/usr/bin/python
 
 import logging
-import tools
 from candidates_parser import CandidatesParser
 import argparse
+import csv
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-argparser = argparse.ArgumentParser(description='Fetch candidates by state, city.')
-argparser.add_argument('state', help='State short name (Ex: "NC" or "HI")')
-argparser.add_argument('city', help='City name (Ex: "New York")')
+arg_parser = argparse.ArgumentParser(description="Fetch candidates by zip codes.")
+arg_parser.add_argument('-f', metavar='file', dest='input_file',
+                        required=True, help='Input file.')
+args = arg_parser.parse_args()
 
-args = argparser.parse_args()
+candidateParser = CandidatesParser()
 
-state = args.state
-city = args.city
-
-zip_codes_list = tools.get_list_of_zip_codes(state, city)
-
-assert zip_codes_list, "empty list (check arguments)"
-
-parser = CandidatesParser(state, city)
-for zip_code in zip_codes_list:
-    logging.debug("***Processing zip_code ({})***".format(zip_code))
-    parser.parse_zip(zip_code)  # And save to db.
+with open(args.input_file) as in_file:
+    zip_reader = csv.reader(in_file)
+    zip_reader.next()
+    for row in zip_reader:
+        zip_code = row[0]
+        state = row[3]
+        candidateParser.parse_zip(state, zip_code)
