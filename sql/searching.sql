@@ -1,8 +1,8 @@
---------- CLEAN --------------------------
+--  ----- CLEAN --------------------------
 DROP VIEW IF EXISTS tables_size_view;
 DROP TABLE IF EXISTS search_space;
 DROP TABLE IF EXISTS search;
-------------------------------------------
+--  --------------------------------------
 
 CREATE TABLE search(
     search_id       INTEGER PRIMARY KEY AUTO_INCREMENT,
