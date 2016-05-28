@@ -20,6 +20,6 @@ with open(args.input_file) as in_file:
     zip_reader.next()
     for row in zip_reader:
         zip_code = row[0]
-        state = row[3]
+        state = row[2]
         if zip_code and state:
             candidateParser.parse_zip(state, zip_code)
