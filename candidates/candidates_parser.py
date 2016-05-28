@@ -21,8 +21,8 @@ class CandidatesParser(object):
         url = self.zip_url.format(api_key=self.api_key, zip_code=zip_code)
 
         resp = requests.get(url)
-        self.parsed_doc = bs4.BeautifulSoup(resp.text, "xml")
         assert resp.status_code == 200, 'api.votesmart.org return not 200'
+        self.parsed_doc = bs4.BeautifulSoup(resp.text, "xml")
 
         for candidate in self.parsed_doc.find_all('candidate'):
             candidate_id = candidate.find('candidateId').get_text()

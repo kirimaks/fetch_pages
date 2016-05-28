@@ -19,7 +19,9 @@ city = args.city
 
 zip_codes_list = tools.get_list_of_zip_codes(state, city)
 
+assert zip_codes_list, "empty list (check arguments)"
+
 parser = CandidatesParser(state, city)
 for zip_code in zip_codes_list:
     logging.debug("***Processing zip_code ({})***".format(zip_code))
-    parser.parse_zip(zip_code)
+    parser.parse_zip(zip_code)  # And save to db.
