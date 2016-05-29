@@ -56,7 +56,7 @@ class SomeSpider(scrapy.Spider):
             yield Request(link, callback=self.process_page)
 
     def process_page(self, response):
-        logging.debug(u"Processing [{}]".format(response.url))
+        logging.debug(u"Processing [{}], status = {}".format(response.url, response.status))
 
         # RETURN url and body to the pipeline.
         return dict(url=response.url, body=response.body)

@@ -3,9 +3,8 @@
 # ./fetch_pages.sh [url] [out_path]
 
 if [[ $1 == '' ]]; then
-    me=`basename "$0"`
-    echo "Usage: ./$me [url]"
-    echo "Example: ./$me http://google.com/search?q=panda"
+    echo "Usage: $0 [url]"
+    echo "Example: $0 http://google.com/search?q=panda"
     exit
 fi
 

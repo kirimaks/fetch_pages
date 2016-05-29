@@ -1,10 +1,9 @@
 #!/bin/bash
 
 if [[ $1 == '' ]]; then
-    me=`basename "$0"`
     echo "Search a query in google."
-    echo "Usage: ./$me first_name last_name state"
-    echo "Example: ./$me Johnny Depp California"
+    echo "Usage: $0 first_name last_name state"
+    echo "Example: $0 Johnny Depp California"
     exit
 fi
 
