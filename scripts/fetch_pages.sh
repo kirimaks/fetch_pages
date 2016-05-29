@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# ./fetch_pages.sh [url] [out_path]
+
 if [[ $1 == '' ]]; then
-    echo "Search a query in google."
-    echo "Usage: ./search.sh [query]"
-    echo "Example: ./search.sh panda"
+    me=`basename "$0"`
+    echo "Usage: ./$me [url]"
+    echo "Example: ./$me http://google.com/search?q=panda"
     exit
 fi
 
@@ -13,4 +15,4 @@ echo $BASE_DIR
 cd $BASE_DIR
 export PATH
 
-bash ./fetch_pages.sh https://google.com/search?q=$1+$2+$3+politics
+scrapy crawl myspider -a url=$1
