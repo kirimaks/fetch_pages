@@ -13,7 +13,7 @@ LOG_LEVEL = 'DEBUG'
 BOT_NAME = 'fetch_pages'
 SPIDER_MODULES = ['fetch_pages.spiders']
 NEWSPIDER_MODULE = 'fetch_pages.spiders'
-USER_AGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+# USER_AGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'fetch_pages (+http://www.yourdomain.com)'
@@ -49,9 +49,10 @@ TELNETCONSOLE_ENABLED=False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'fetch_pages.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    # 'fetch_pages.middlewares.MyCustomDownloaderMiddleware': 543,
+    'fetch_pages.random_ua.RandomUAMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
