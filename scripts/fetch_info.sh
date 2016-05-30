@@ -2,4 +2,4 @@
 
 # Fetching info for all candidates from database.
 
-python ../fetch_info/fetch_info.py -c 10
+python ../fetch_info/fetch_info.py

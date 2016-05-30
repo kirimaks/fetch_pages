@@ -5,18 +5,39 @@ import re
 from scrapy.http import Request
 from urlparse import urlparse
 
-exclude_url = re.compile(r'(jpg|png|gif)$', flags=re.IGNORECASE)
-include_url = re.compile(r'^[\w\/]{2,}')
-
 
 def validate_url(link):
-    """ Checking if the link is valid. """
 
-    if not exclude_url.search(link):
-        if include_url.match(link):
-            return True
+    # r'^http.?:\/\/[\w]*\.google.*'   # For all google subdomain.
 
-    return False
+    restricted_urls = (
+        r'^\/',
+        r'^http.?:\/\/www\.google.*',
+        r'^http.?:\/\/translate\.google.*',
+        r'^http.?:\/\/maps\.google.*',
+        r'^http.?:\/\/accounts\.google.*',
+        r'^http.?:\/\/plus\.google.*',
+        r'^http.?:\/\/news\.google.*',
+        r'^http.?:\/\/support\.google.*',
+        r'^http.?:\/\/play\.google.*',
+        r'^http.?:\/\/mail\.google.*',
+        r'^http.?:\/\/photos\.google.*',
+        r'^http.?:\/\/myaccount\.google.*',
+        r'^http.?:\/\/docs\.google.*',
+        r'^http.?:\/\/drive\.google.*',
+        r'^http.?:\/\/webcache\.googleusercontent.*',
+        r'^http.?:\/\/www\.blogger.com',
+        r'^http.?:\/\/hangouts.google.com',
+    )
+
+    if not re.match("^http", link):     # If starts not from http, filter it.
+        return False
+
+    for pt in restricted_urls:
+        if re.match(pt, link):
+            return False
+
+    return True
 
 
 class SomeSpider(scrapy.Spider):
@@ -44,8 +65,6 @@ class SomeSpider(scrapy.Spider):
             link = link.extract()   # Get the link as text.
 
             if validate_url(link):
-                if not link.startswith(u"http"):
-                    link = self.netloc + link.lstrip('/')
                 link_list.add(link)
             else:
                 logging.debug(u"*** Skipping url [{}] ***".format(link))

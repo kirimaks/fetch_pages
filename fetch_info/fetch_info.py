@@ -3,6 +3,7 @@
 import MySQLdb
 import subprocess
 import argparse
+import time
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("-c", metavar="n", dest="count",
@@ -17,6 +18,8 @@ class FetchInfo(object):
 
         self.db = MySQLdb.connect("localhost", "root", "1234", "parsed_data")
         self.cursor = self.db.cursor()
+
+        self.delay_time = 3
 
     def fetch_by_id(self, candidate_id):
         query = """
@@ -44,6 +47,8 @@ class FetchInfo(object):
             if self.count_limit:
                 if self.check_count_limit():
                     break
+
+            time.sleep(self.delay_time)
 
     def check_count_limit(self):
         self.rq_count += 1
