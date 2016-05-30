@@ -14,3 +14,4 @@ cd $BASE_DIR
 export PATH
 
 bash ./fetch_pages.sh https://google.com/search?q=$1+$2+$3+politics
+# bash ./fetch_pages.sh https://www.bing.com/search?q=$1+$2+$3+politics
