@@ -24,6 +24,7 @@ def validate_url(link):
         r'^http.?:\/\/photos\.google.*',
         r'^http.?:\/\/myaccount\.google.*',
         r'^http.?:\/\/docs\.google.*',
+        r'^http.?:\/\/wallet\.google.*',
         r'^http.?:\/\/drive\.google.*',
         r'^http.?:\/\/webcache\.googleusercontent.*',
         r'^http.?:\/\/www\.blogger.com',
