@@ -6,39 +6,20 @@ from scrapy.http import Request
 from urlparse import urlparse
 
 
+link_pattern = re.compile(r'(^\/|#|jav)|(^http.?:\/\/[\w]+\.(google|blogger))')
+
+
 def validate_url(link):
 
-    # r'^http.?:\/\/[\w]*\.google.*'   # For all google subdomain.
-
-    restricted_urls = (
-        r'^\/',
-        r'^http.?:\/\/www\.google.*',
-        r'^http.?:\/\/translate\.google.*',
-        r'^http.?:\/\/maps\.google.*',
-        r'^http.?:\/\/accounts\.google.*',
-        r'^http.?:\/\/plus\.google.*',
-        r'^http.?:\/\/news\.google.*',
-        r'^http.?:\/\/support\.google.*',
-        r'^http.?:\/\/play\.google.*',
-        r'^http.?:\/\/mail\.google.*',
-        r'^http.?:\/\/photos\.google.*',
-        r'^http.?:\/\/myaccount\.google.*',
-        r'^http.?:\/\/docs\.google.*',
-        r'^http.?:\/\/wallet\.google.*',
-        r'^http.?:\/\/drive\.google.*',
-        r'^http.?:\/\/webcache\.googleusercontent.*',
-        r'^http.?:\/\/www\.blogger.com',
-        r'^http.?:\/\/hangouts.google.com',
-    )
-
-    if not re.match("^http", link):     # If starts not from http, filter it.
+    # Check link and restrict urls from pattern.
+    if link_pattern.match(link):
         return False
 
-    for pt in restricted_urls:
-        if re.match(pt, link):
-            return False
+    # If the link have an anchor, delete it.
+    if link.find('#') != -1:
+        link = link[:link.index('#')]
 
-    return True
+    return link
 
 
 class SomeSpider(scrapy.Spider):
@@ -63,10 +44,11 @@ class SomeSpider(scrapy.Spider):
         # Prepare links (get unique links, and skip some links).
         for link in response.xpath('//a/@href'):
 
-            link = link.extract()   # Get the link as text.
+            link = link.extract()       # Get the link as text.
+            checked_link = validate_url(link)   # Validate and truncate anchor.
 
-            if validate_url(link):
-                link_list.add(link)
+            if checked_link:
+                link_list.add(checked_link)             # Add link.
             else:
                 logging.debug(u"*** Skipping url [{}] ***".format(link))
 
