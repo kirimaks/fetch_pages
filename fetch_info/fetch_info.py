@@ -48,12 +48,13 @@ class FetchInfo(object):
                 if self.check_count_limit():
                     break
 
+            print("Waiting: [{}] seconds...".format(self.delay_time))
             time.sleep(self.delay_time)
 
     def check_count_limit(self):
         self.rq_count += 1
         if self.rq_count >= self.count_limit:
-            print("Exist due to requests limit.")
+            print("Exit due to requests limit.")
             return True     # Exit
 
 fetcher = FetchInfo(args.count)
