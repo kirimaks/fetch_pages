@@ -14,7 +14,7 @@ BOT_NAME = 'fetch_pages'
 SPIDER_MODULES = ['fetch_pages.spiders']
 NEWSPIDER_MODULE = 'fetch_pages.spiders'
 # USER_AGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-DOWNLOAD_TIMEOUT=5
+DOWNLOAD_TIMEOUT=8
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'fetch_pages (+http://www.yourdomain.com)'

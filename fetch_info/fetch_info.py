@@ -8,11 +8,14 @@ import time
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("-c", metavar="n", dest="count",
                         type=int, help="Requests limit.")
+arg_parser.add_argument("-s", metavar="n", dest="start_limit",
+                        type=int, help="Start from n line in search database",
+                        default=0)
 args = arg_parser.parse_args()
 
 
 class FetchInfo(object):
-    def __init__(self, count_limit=None):
+    def __init__(self, count_limit=None, start_limit=0):
         self.count_limit = count_limit
         self.rq_count = 0
 
@@ -20,6 +23,7 @@ class FetchInfo(object):
         self.cursor = self.db.cursor()
 
         self.delay_time = 3
+        self.start_limit = start_limit
 
     def fetch_by_id(self, candidate_id):
         query = """
@@ -38,7 +42,10 @@ class FetchInfo(object):
         subprocess.call(("/bin/bash", "../scripts/search.sh", name, surname, state))
 
     def load_id_list(self):
-        self.cursor.execute("SELECT id FROM office_holders")
+
+        self.cursor.execute("""SELECT id
+                FROM office_holders
+                LIMIT {}, 18446744073709551615""".format(self.start_limit))
 
         for some_id in self.cursor.fetchall():
             some_id = some_id[0]
@@ -57,5 +64,5 @@ class FetchInfo(object):
             print("Exit due to requests limit.")
             return True     # Exit
 
-fetcher = FetchInfo(args.count)
+fetcher = FetchInfo(args.count, args.start_limit)
 fetcher.load_id_list()
