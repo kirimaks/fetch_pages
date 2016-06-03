@@ -4,6 +4,7 @@ import MySQLdb
 import subprocess
 import argparse
 import time
+from MySQLdb import OperationalError
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("-c", metavar="n", dest="count",
@@ -16,14 +17,15 @@ args = arg_parser.parse_args()
 
 class FetchInfo(object):
     def __init__(self, count_limit=None, start_limit=0):
+        self.connect_db()
         self.count_limit = count_limit
         self.rq_count = 0
-
-        self.db = MySQLdb.connect("localhost", "root", "1234", "parsed_data")
-        self.cursor = self.db.cursor()
-
         self.delay_time = 3
         self.start_limit = start_limit
+
+    def connect_db(self):
+        self.db = MySQLdb.connect("localhost", "root", "1234", "parsed_data")
+        self.cursor = self.db.cursor()
 
     def fetch_by_id(self, candidate_id):
         query = """
@@ -34,7 +36,15 @@ class FetchInfo(object):
                 WHERE candidate.id = {}
         """.format(candidate_id)
 
-        self.cursor.execute(query)
+        try:
+            self.cursor.execute(query)
+
+        except OperationalError:    # Reconnect.
+            time.sleep(5)
+            self.connect_db()
+            self.cursor.execute(query)
+
+
         out = self.cursor.fetchall()[0]
         name = out[0].replace(' ', '+')
         surname = out[1].replace(' ', '+')
