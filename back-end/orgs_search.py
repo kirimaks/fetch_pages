@@ -1,5 +1,4 @@
 import MySQLdb
-import timeit
 
 
 class OrgsSearch(object):
@@ -12,8 +11,8 @@ class OrgsSearch(object):
         return sp, db
 
     def __del__(self):
-        # self.db.close()
-        pass
+        self.db.close()
+        self.sp.close()
 
     def __init__(self):
         self.sp, self.db = self.connect_db()
@@ -28,12 +27,12 @@ class OrgsSearch(object):
         sp_query = """
             SELECT count(*)
                 FROM parsed_data
-                WHERE search_id = 55 AND match(%s)
+                WHERE search_id = %s AND match(%s)
         """
 
         self.db_cursor.execute(query)
 
-        results = dict()
+        results = list()
 
         for cur_org in self.db_cursor.fetchall():
             cur_org = cur_org[0]
@@ -41,18 +40,15 @@ class OrgsSearch(object):
             cur_org = cur_org.replace('/', '\/')
             cur_org = cur_org.replace('!', '\!')
 
-            self.sp_cursor.execute(sp_query, (cur_org,))
-            row = self.sp_cursor.fetchone()
+            self.sp_cursor.execute(sp_query, (search_id, cur_org))
+            occur = self.sp_cursor.fetchone()
 
-            if row:
-                results[cur_org] = row[0]
+            if occur:
+                results.append(dict(text=cur_org, weight=occur[0]))
 
-        print(len(results))
+        return results
 
 if __name__ == "__main__":
-    start_time = timeit.default_timer()
-
     org_searcher = OrgsSearch()
-    org_searcher.search(50)
-
-    print(timeit.default_timer() - start_time)
+    out = org_searcher.search(45)
+    print(out)
