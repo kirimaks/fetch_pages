@@ -11,12 +11,20 @@ class CandidatesParser(object):
     def __init__(self):
         self.api_key = 'e1819095ba39161837e6b61942b34ba5'
         self.backend = CandidatesBackend()
-        self.zip_url = "http://api.votesmart.org/Officials.getByZip?\
+        self.official_zip_url = "http://api.votesmart.org/Officials.getByZip?\
+                        key={api_key}&zip5={zip_code}"
+        self.candidate_zip_url = "http://api.votesmart.org/Candidates.getByZip?\
                         key={api_key}&zip5={zip_code}"
 
-    def parse_zip(self, state, zip_code):
+    def parse_zip(self, state, zip_code, category):
         zip_code_id = self.backend.get_zip_code(zip_code, state)
-        url = self.zip_url.format(api_key=self.api_key, zip_code=zip_code)
+
+        if category == "officials":
+            url = self.official_zip_url.format(api_key=self.api_key,
+                                               zip_code=zip_code)
+        elif category == "candidates":
+            url = self.candidate_zip_url.format(api_key=self.api_key,
+                                                zip_code=zip_code)
 
         resp = requests.get(url)
         assert resp.status_code == 200, 'api.votesmart.org return not 200'
