@@ -65,12 +65,17 @@
                     words[key] = val;
                 });
 
-                //$(div_id).jQCloud(words);
-                //$(div_id).jQCloud('update', words);
+                if (words.length <= 0) {
+                    console.log("Empty data, exit...");
+                    return;
+                }
+                console.log("Output length: " + words.length)
 
                 if ($("#tag-cloud").html() == "") {
+                    console.log("add words");
                     $(div_id).jQCloud(words);
                 } else {
+                    console.log("update words");
                     $(div_id).jQCloud('update', words);
                 }
             });

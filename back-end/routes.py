@@ -35,7 +35,7 @@ def search_by_id(search_id):
 def get_id(name):
     name = name.split(" ")
 
-    if not name[0] or not name[1]:
+    if not len(name) == 2:
         return "0"
 
     conn = mysql.connect()
