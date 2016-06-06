@@ -27,12 +27,14 @@ class SomeSpider(scrapy.Spider):
 
     start_ruls = []
 
-    def __init__(self, url=None, *kargs, **pargs):
+    def __init__(self, url=None, candidate_id=None, *kargs, **pargs):
         assert url, "Need to set a url."
+        assert candidate_id, "Need to set candidate_id."
 
         scrapy.Spider.__init__(self, *kargs, **pargs)
 
         self.start_urls.append(url)
+        self.candidate_id = candidate_id
 
         # Save netloc.
         parser = urlparse(url)
@@ -44,7 +46,7 @@ class SomeSpider(scrapy.Spider):
         # Prepare links (get unique links, and skip some links).
         for link in response.xpath('//a/@href'):
 
-            link = link.extract()       # Get the link as text.
+            link = link.extract()               # Get the link as text.
             checked_link = validate_url(link)   # Validate and truncate anchor.
 
             if checked_link:
@@ -58,7 +60,9 @@ class SomeSpider(scrapy.Spider):
             yield Request(link, callback=self.process_page)
 
     def process_page(self, response):
-        logging.debug(u"Processing [{}], status = {}".format(response.url, response.status))
+        logging.debug(u"Processing [{}], status = {}".format(response.url,
+                                                             response.status))
 
         # RETURN url and body to the pipeline.
-        return dict(url=response.url, body=response.body)
+        return dict(url=response.url, body=response.body,
+                    candidate_id=self.candidate_id)

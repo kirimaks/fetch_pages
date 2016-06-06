@@ -44,12 +44,13 @@ class FetchInfo(object):
             self.connect_db()
             self.cursor.execute(query)
 
-
         out = self.cursor.fetchall()[0]
         name = out[0].replace(' ', '+')
         surname = out[1].replace(' ', '+')
         state = out[2].replace(' ', '+')
-        subprocess.call(("/bin/bash", "../scripts/search.sh", name, surname, state))
+
+        subprocess.call(("/bin/bash", "../scripts/search.sh",
+                         name, surname, state, str(candidate_id)))
 
     def load_id_list(self):
 
