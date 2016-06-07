@@ -6,13 +6,13 @@ from scrapy.http import Request
 from urlparse import urlparse
 
 
-link_pattern = re.compile(r'(^\/|#|jav)|(^http.?:\/\/[\w]+\.(google|blogger))')
+link_pattern = re.compile(r'^(\/|#|jav)|(^http.?:\/\/[\w]+\.(google|blogger))|(gif|png|jpg)$')
 
 
 def validate_url(link):
 
     # Check link and restrict urls from pattern.
-    if link_pattern.match(link):
+    if link_pattern.search(link):
         return False
 
     # If the link have an anchor, delete it.
