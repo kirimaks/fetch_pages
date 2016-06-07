@@ -19,7 +19,7 @@ class OrgsSearch(object):
         self.sp_cursor = self.sp.cursor()
         self.db_cursor = self.db.cursor()
 
-    def search(self, search_id):
+    def search(self, candidate_id):
         query = """
             select org_name from orgs
         """
@@ -27,7 +27,7 @@ class OrgsSearch(object):
         sp_query = """
             SELECT count(*)
                 FROM parsed_data
-                WHERE search_id = %s AND match(%s)
+                WHERE candidate_id = %s AND match(%s)
         """
 
         self.db_cursor.execute(query)
@@ -40,7 +40,7 @@ class OrgsSearch(object):
             cur_org = cur_org.replace('/', '\/')
             cur_org = cur_org.replace('!', '\!')
 
-            self.sp_cursor.execute(sp_query, (search_id, cur_org))
+            self.sp_cursor.execute(sp_query, (candidate_id, cur_org))
             occur = self.sp_cursor.fetchone()
 
             if occur:

@@ -33,21 +33,22 @@ def search_by_id(search_id):
 
 @app.route("/get_id/<name>")
 def get_id(name):
-    name = name.split(" ")
-
-    if not len(name) == 2:
-        return "0"
 
     conn = mysql.connect()
     cursor = conn.cursor()
 
     query = """
-        SELECT search_id
-        FROM search
-            WHERE search_string LIKE '%{name}+{surname}%' LIMIT 1
+
+        SELECT *,
+            MATCH(first_name, last_name) against(%s  IN BOOLEAN MODE) as rel
+            from office_holders
+            where match(first_name, last_name) against(%s  IN BOOLEAN MODE)
+            order by rel desc
+            limit 1
     """
 
-    cursor.execute(query.format(name=name[0], surname=name[1]))
+    # cursor.execute(query.format(name=name[0], surname=name[1]))
+    cursor.execute(query, (name, name))
     user_id = cursor.fetchone()
 
     if user_id:
