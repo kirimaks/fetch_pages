@@ -37,9 +37,12 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body input-group">
+                    <span class="input-group-btn">
+                        <button id="person-button" class="btn btn-success" type="button">Person</button>
+                    </span>
                     <input id="go-text" type="text" class="form-control" value="" placeholder="Text input">
                     <span class="input-group-btn">
-                        <button id="go-button" class="btn btn-default" type="button">Go!</button>
+                        <button id="org-button" class="btn btn-primary" type="button">Orgs</button>
                     </span>
                 </div>
             </div>
@@ -57,59 +60,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="static/bower_components/jqcloud2/dist/jqcloud.min.js"></script>
 
-    <script>
-        function write_tags(json_url, div_id) {
-            $.getJSON(json_url, function(results) {
-                var words = new Array();
-                $.each(results, function(key, val) {
-                    words[key] = val;
-                });
-
-                if (words.length <= 0) {
-                    console.log("Empty data, clear tags and exit...");
-                    $(div_id).jQCloud('destroy');
-                    return;
-                }
-                console.log("Output length: " + words.length)
-
-                if ($("#tag-cloud").html() == "") {
-                    console.log("add words");
-                    $(div_id).jQCloud(words);
-                } else {
-                    console.log("update words");
-                    $(div_id).jQCloud('update', words);
-                }
-            });
-        }
-
-        function get_id_and_write_tags(name) {
-            var my_url = "/get_id/" + name
-            console.log(my_url);
-
-            $.ajax({
-                url: my_url,
-                success: function(resp) {
-                    console.log("ReturnedId: " + resp);
-
-                    if (resp >= 0) {
-                        // Make request.
-                        var search_url = "/search/" + resp;
-                        console.log("Request to: ", search_url);
-                        write_tags(search_url, "#tag-cloud");
-                    } else {
-                        // Clear tags.        
-                        console.log("Negative id recived, clear tags....");
-                        $("#tag-cloud").jQCloud('destroy');
-                    }
-                },
-            });
-        }
-    </script>
+    <script src="static/js/search.js"></script>
 
     <script>
         $(document).ready(function() {
-            // Button event.
-            $("#go-button").click(function() {
+            // Person Button event.
+            $("#person-button").click(function() {
                 var buff = $("#go-text").val();
 
                 if (buff) {
@@ -128,6 +84,16 @@
                     }
                 }
             });
+
+            // Orgs Button event.
+            $("#org-button").click(function() {
+                var buff = $("#go-text").val();
+
+                if (buff) {
+                    search_org_and_write_tags(buff);
+                }
+            });
+
 
         });
     </script>

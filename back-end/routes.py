@@ -1,8 +1,11 @@
 from flask import Flask, Response
 from flask import render_template
 from flask.ext.mysql import MySQL
-from orgs_search import OrgsSearch
 import json
+
+# TODO: make a module "db_search".
+from orgs_search import OrgsSearch
+from people_search import PeopleSearch
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -37,6 +40,7 @@ def get_id(name):
     conn = mysql.connect()
     cursor = conn.cursor()
 
+    # TODO: move it to a module.
     query = """
         SELECT *,
             MATCH(first_name, last_name) against(%s  IN BOOLEAN MODE) as rel
@@ -48,11 +52,23 @@ def get_id(name):
 
     cursor.execute(query, (name, name))
     user_id = cursor.fetchone()
+    conn.close()
 
     if user_id:
         return str(user_id[0])
     else:
         return "-1"
+
+
+@app.route("/search_by_org/<org_name>")
+def search_by_org(org_name):
+    people_searcher = PeopleSearch()
+    results = people_searcher.search(org_name)
+
+    resp = Response(response=json.dumps(results),
+                    status=200,
+                    mimetype="application/json")
+    return resp
 
 
 if __name__ == "__main__":
