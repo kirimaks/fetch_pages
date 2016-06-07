@@ -50,5 +50,5 @@ class OrgsSearch(object):
 
 if __name__ == "__main__":
     org_searcher = OrgsSearch()
-    out = org_searcher.search(45)
+    out = org_searcher.search(110)
     print(out)

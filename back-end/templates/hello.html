@@ -89,10 +89,17 @@
                 url: my_url,
                 success: function(resp) {
                     console.log("ReturnedId: " + resp);
-                    var search_url = "/search/" + resp;
 
-                    console.log("Request to: ", search_url);
-                    write_tags(search_url, "#tag-cloud");
+                    if (resp >= 0) {
+                        // Make request.
+                        var search_url = "/search/" + resp;
+                        console.log("Request to: ", search_url);
+                        write_tags(search_url, "#tag-cloud");
+                    } else {
+                        // Clear tags.        
+                        console.log("Negative id recived, clear tags....");
+                        $("#tag-cloud").jQCloud('destroy');
+                    }
                 },
             });
         }
@@ -101,7 +108,6 @@
     <script>
         $(document).ready(function() {
             $("#go-button").click(function() {
-                //$("#tag-cloud").html("");
                 var buff = $("#go-text").val();
 
                 if (buff) {

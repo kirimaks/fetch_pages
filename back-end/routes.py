@@ -20,10 +20,10 @@ def hello():
     return render_template("hello.html")
 
 
-@app.route("/search/<int:search_id>")
-def search_by_id(search_id):
+@app.route("/search/<int:candidate_id>")
+def search_by_id(candidate_id):
     org_searcher = OrgsSearch()
-    results = org_searcher.search(search_id)
+    results = org_searcher.search(candidate_id)
 
     resp = Response(response=json.dumps(results),
                     status=200,
@@ -38,23 +38,21 @@ def get_id(name):
     cursor = conn.cursor()
 
     query = """
-
         SELECT *,
             MATCH(first_name, last_name) against(%s  IN BOOLEAN MODE) as rel
-            from office_holders
-            where match(first_name, last_name) against(%s  IN BOOLEAN MODE)
-            order by rel desc
-            limit 1
+            FROM office_holders
+                WHERE MATCH(first_name, last_name) against(%s  IN BOOLEAN MODE)
+            ORDER BY REL DESC
+            LIMIT 1
     """
 
-    # cursor.execute(query.format(name=name[0], surname=name[1]))
     cursor.execute(query, (name, name))
     user_id = cursor.fetchone()
 
     if user_id:
         return str(user_id[0])
     else:
-        return "0"
+        return "-1"
 
 
 if __name__ == "__main__":
