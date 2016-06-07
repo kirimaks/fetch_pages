@@ -107,6 +107,7 @@
 
     <script>
         $(document).ready(function() {
+            // Button event.
             $("#go-button").click(function() {
                 var buff = $("#go-text").val();
 
@@ -114,6 +115,19 @@
                     get_id_and_write_tags(buff);
                 }
             });
+
+            // Enter key event.
+            $("#go-text").keypress(function(k) {
+                var key = k.which;
+                if (key == 13) {
+                    var buff = $("#go-text").val();
+
+                    if (buff) {
+                        get_id_and_write_tags(buff);
+                    }
+                }
+            });
+
         });
     </script>
 
