@@ -28,9 +28,8 @@ class PeopleSearch(object):
         # Check if the organisation exists.
         # If not, return empty list.
         mysql_query = """
-            SELECT org_id
-                FROM orgs
-                WHERE org_name = %s LIMIT 1;
+            SELECT org_id, MATCH(org_name) AGAINST(%s in natural language mode) as rl
+                FROM orgs ORDER by rl DESC LIMIT 1;
         """
 
         self.db_cursor.execute(mysql_query, (org_name,))
