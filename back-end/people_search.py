@@ -60,7 +60,7 @@ class PeopleSearch(object):
             self.db_cursor.execute(mysql_query, (candidate_id,))
             buff = self.db_cursor.fetchone()
 
-            cur_candidate = dict(text="{} {}".format(buff[0], buff[1]),
+            cur_candidate = dict(text=u"{} {}".format(buff[0], buff[1]),
                                  weight=candidate_weight)
 
             results.append(cur_candidate)
