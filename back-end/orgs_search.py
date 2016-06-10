@@ -43,7 +43,7 @@ class OrgsSearch(object):
             self.sp_cursor.execute(sp_query, (candidate_id, cur_org))
             occur = self.sp_cursor.fetchone()
 
-            if occur:
+            if occur[0]:
                 results.append(dict(text=cur_org, weight=occur[0]))
 
         return results

@@ -45,7 +45,7 @@ class GroupUpdater(threading.Thread):
         search_query = """
             SELECT id as doc_id, weight()
                 FROM parsed_data
-                WHERE MATCH(%s)
+                WHERE MATCH(%s) LIMIT 10000000 option max_matches=1000000
         """
 
         # Prepare insert query.
@@ -54,16 +54,20 @@ class GroupUpdater(threading.Thread):
                 VALUES(%s, %s, %s)
         """
 
+        # Prepare organisation id list.
         orgs_list = [i for i in updater.orgs_list.keys() if i % updater.threads_num == self.thread_num]
 
         for org_id in orgs_list:
+            # Fetch org name.
             org_name = updater.orgs_list[org_id]
             org_name = org_name.replace('/', r'\/')
             org_name = org_name.replace('\'', r'\'')
             org_name = org_name.replace('!', r'\!')
 
+            # Search documents for this org name.
             self.sphinx_cursor.execute(search_query, (org_name,))
 
+            # Save results.
             for buff in self.sphinx_cursor.fetchall():
                 doc_id = buff[0]
                 weight = buff[1]
