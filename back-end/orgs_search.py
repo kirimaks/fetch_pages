@@ -20,35 +20,27 @@ class OrgsSearch(object):
         self.db_cursor = self.db.cursor()
 
     def search(self, candidate_id):
+
         query = """
-            select org_name from orgs
+            SELECT orgs.org_name, dto.weight
+                FROM doc_to_org_ref AS dto
+                    JOIN orgs ON dto.org_id = orgs.org_id
+                    JOIN search_space ON dto.doc_id = search_space.rid
+                WHERE search_space.candidate_id = %s
+            GROUP BY orgs.org_name
+            ORDER BY 2 DESC
         """
 
-        sp_query = """
-            SELECT count(*)
-                FROM parsed_data
-                WHERE candidate_id = %s AND match(%s)
-        """
-
-        self.db_cursor.execute(query)
+        self.db_cursor.execute(query, (candidate_id,))
 
         results = list()
 
-        for cur_org in self.db_cursor.fetchall():
-            cur_org = cur_org[0]
-            cur_org = cur_org.replace('(', '').replace(')', '')  # TODO:
-            cur_org = cur_org.replace('/', '\/')
-            cur_org = cur_org.replace('!', '\!')
-
-            self.sp_cursor.execute(sp_query, (candidate_id, cur_org))
-            occur = self.sp_cursor.fetchone()
-
-            if occur[0]:
-                results.append(dict(text=cur_org, weight=occur[0]))
+        for buff in self.db_cursor.fetchall():
+            results.append(dict(text=buff[0], weight=buff[1]))
 
         return results
 
 if __name__ == "__main__":
     org_searcher = OrgsSearch()
-    out = org_searcher.search(110)
+    out = org_searcher.search(478)
     print(out)
