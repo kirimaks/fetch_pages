@@ -22,31 +22,14 @@ function write_tags(json_url, div_id) {
     });
 }
 
-function get_id_and_write_tags(name) {
-    var my_url = "/get_id/" + name;
+function group_search(pattern) {
+    var my_url = "/group_search/" + pattern;
     console.log(my_url);
-
-    $.ajax({
-        url: my_url,
-        success: function(resp) {
-            console.log("ReturnedId: " + resp);
-
-            if (resp >= 0) {
-                // Make request.
-                var search_url = "/search/" + resp;
-                console.log("Request to: ", search_url);
-                write_tags(search_url, "#tag-cloud");
-            } else {
-                // Clear tags.        
-                console.log("Negative id recived, clear tags....");
-                $("#tag-cloud").jQCloud('destroy');
-            }
-        },
-    });
+    write_tags(my_url, "#tag-cloud");
 }
 
-function search_org_and_write_tags(name) {
-    var my_url = "/search_by_org/" + name;
+function org_search(name) {
+    var my_url = "/org_search/" + name;
     console.log("Request to: " + my_url);
     write_tags(my_url, "#tag-cloud");
 }

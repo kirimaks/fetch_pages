@@ -1,4 +1,5 @@
 import MySQLdb
+import json
 
 
 class PeopleSearch(object):
@@ -64,7 +65,7 @@ class PeopleSearch(object):
 
             results.append(cur_candidate)
 
-        return results
+        return json.dumps(results)
 
 
 if __name__ == "__main__":
