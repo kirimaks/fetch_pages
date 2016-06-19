@@ -42,10 +42,13 @@ class GroupUpdater(threading.Thread):
         print("*** Thread: {} started ***".format(self.thread_num))
 
         # Prepare sphinx query.
+        # TODO: prepare number of documents in database before.
+        # Default is "proximity" ranker.
         search_query = """
             SELECT id as doc_id, weight()
                 FROM parsed_data
-                WHERE MATCH(%s) LIMIT 10000000 option max_matches=1000000
+                WHERE MATCH(%s) LIMIT 10000000
+            OPTION max_matches=1000000, ranker=sph04
         """
 
         # Prepare insert query.
@@ -55,10 +58,11 @@ class GroupUpdater(threading.Thread):
         """
 
         # Prepare organisation id list.
-        orgs_list = [i for i in updater.orgs_list.keys() if i % updater.threads_num == self.thread_num]
+        orgs_list = [i for i in updater.orgs_list.keys()
+                     if i % updater.threads_num == self.thread_num]
 
         for org_id in orgs_list:
-            # Fetch org name.
+            # Fetch and modify org name.
             org_name = updater.orgs_list[org_id]
             org_name = org_name.replace('/', r'\/')
             org_name = org_name.replace('\'', r'\'')
