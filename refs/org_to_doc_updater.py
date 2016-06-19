@@ -61,6 +61,9 @@ class GroupUpdater(threading.Thread):
         orgs_list = [i for i in updater.orgs_list.keys()
                      if i % updater.threads_num == self.thread_num]
 
+        # Results buffer.
+        buff = []
+
         for org_id in orgs_list:
             # Fetch and modify org name.
             org_name = updater.orgs_list[org_id]
@@ -71,12 +74,13 @@ class GroupUpdater(threading.Thread):
             # Search documents for this org name.
             self.sphinx_cursor.execute(search_query, (org_name,))
 
-            # Save results.
-            for buff in self.sphinx_cursor.fetchall():
-                doc_id = buff[0]
-                weight = buff[1]
-                self.cursor.execute(insert_query, (doc_id, org_id, weight))
-                self.conn.commit()
+            # Save results for futer insert.
+            for (doc_id, weight) in self.sphinx_cursor.fetchall():
+                buff.append((doc_id, org_id, weight))
+
+        # Write results to database.
+        self.cursor.executemany(insert_query, buff)
+        self.conn.commit()
 
 
 class RefUpdater(object):
