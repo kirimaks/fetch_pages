@@ -1,5 +1,9 @@
 import MySQLdb
 import threading
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 
 def mysql_connect():
@@ -39,7 +43,7 @@ class GroupUpdater(threading.Thread):
         self.sphinx_conn.close()
 
     def run(self):
-        print("*** Thread: {} started ***".format(self.thread_num))
+        log.info("*** Thread: {} stared ***".format(self.thread_num))
 
         # Prepare sphinx query.
         # TODO: prepare number of documents in database before.
@@ -75,7 +79,11 @@ class GroupUpdater(threading.Thread):
             self.sphinx_cursor.execute(search_query, (org_name,))
 
             # Save results for futer insert.
-            for (doc_id, weight) in self.sphinx_cursor.fetchall():
+            while True:
+                row = self.sphinx_cursor.fetchone()
+                if not row:
+                    break
+                doc_id, weight = row
                 buff.append((doc_id, org_id, weight))
 
         # Write results to database.
