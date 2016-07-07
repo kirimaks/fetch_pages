@@ -1,9 +1,10 @@
 from flask import Flask, Response
 from flask import render_template
+from flask import request
 
-# from search.orgs_search import OrgsSearch
 from search.people_search import PeopleSearch
 from search.group_search import GroupSearch
+from search.tweets import get_tweets
 
 app = Flask(__name__)
 
@@ -35,5 +36,12 @@ def org_search(org_name):
     return resp
 
 
+@app.route("/tweets")
+def tweets():
+    tag = request.args.get("tag")
+    tweets = get_tweets(tag)
+    return render_template("tweets.html", tweets=tweets)
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
