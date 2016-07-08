@@ -56,13 +56,12 @@
                     <div class="panel-heading">
                         <strong>{{ tweet['user']['name'] }}</strong>
                         <span class="followers-block">Followers:
-                            <span class="label label-default">888</span>
+                            <span class="label label-default">{{ tweet['user']['followers_count'] }}</span>
                         </span>
                     </div>
                     <div class="panel-body">
                         <p>
                             {{ tweet['text'] }}
-                            {{ tweet['user']['followers_count'] }}
                         </p>
                         <p>
                             {% for tag in tweet['entities']['hashtags'] %}
