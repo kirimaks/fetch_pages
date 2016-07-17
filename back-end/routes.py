@@ -4,7 +4,7 @@ from flask import request
 
 from search.people_search import PeopleSearch
 from search.group_search import GroupSearch
-from search.tweets import get_tweets
+from search.tweets import search_users
 
 app = Flask(__name__)
 
@@ -38,9 +38,9 @@ def org_search(org_name):
 
 @app.route("/tweets")
 def tweets():
-    tag = request.args.get("tag")
-    tweets = get_tweets(tag)
-    return render_template("tweets.html", tweets=tweets)
+    name = request.args.get("name")
+    users = search_users(name)
+    return render_template("tweets.html", users=users)
 
 
 if __name__ == "__main__":

@@ -35,3 +35,12 @@ def get_tweets(tag):
         buff.append(status)
 
     return buff
+
+
+def search_users(name):
+    if name:
+        url = "https://api.twitter.com/1.1/users/search.json?q={}".format(name)
+        data = oauth_req(url, TOKEN_KEY, TOKEN_SERCRET)
+        users = [user['screen_name'] for user in json.loads(data)]
+        return users[:12]
+    return []
