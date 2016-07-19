@@ -31,13 +31,22 @@
         .followers-block {
             float:right;
         }
-        #results-list {
+        #list {
+            /*
             display:table;
             border-collapse:separate;
             border-spacing:5px;
+            */
         }
         .box {
+            /*
             display:table-cell;
+            border:1px solid black;
+            */
+            float:left;
+        }
+        .twitter-follow-button {
+            display:block;
         }
     </style>
     
@@ -66,14 +75,20 @@
         
         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-        <div class="col-md-12">
+        <div class="col-md-12" id="list">
             {% for user in users %}
-            <a class="twitter-timeline" data-width="260" data-height="300" data-theme="light" href="https://twitter.com/{{ user }}">
-                {{ user }}
-            </a>
+            <div class='box'>
+                <a href="https://twitter.com/{{ user }}" class="twitter-follow-button" data-show-count="true">
+                    Follow @{{ user }}
+                </a>
+                <a class="twitter-timeline" data-width="260" data-height="300" data-theme="light" href="https://twitter.com/{{ user }}">
+                    {{ user }}
+                </a>
+            </div>
             {% endfor %}
         </div>
     </div>
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
