@@ -37,6 +37,7 @@
             border-collapse:separate;
             border-spacing:5px;
             */
+            margin:5px;
         }
         .box {
             /*
@@ -54,6 +55,14 @@
 
   <body>
     <div class="container">
+        <div class="row">
+            {% if user_name %}
+                <h3> Hello [{{ user_name }}]</h3>
+                <a class="btn btn-primary" href="/logout">Logout</a>
+            {% else %}
+                <a class="btn btn-primary" href="/login">Login</a>
+            {% endif %}
+        </div>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <h3>Vote blox</h3>
@@ -75,7 +84,7 @@
         
         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-        <div class="col-md-12" id="list">
+        <div class="col-md-12 panel" id="list">
             {% for user in users %}
             <div class='box'>
                 <a href="https://twitter.com/{{ user }}" class="twitter-follow-button" data-show-count="true">

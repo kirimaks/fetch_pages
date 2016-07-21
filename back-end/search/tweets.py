@@ -1,10 +1,10 @@
 import oauth2
 import json
 
-API_KEY = 'U26cgDp3zOj7p84VJpwDHoY7B'
-API_SECRET = 'vudQQfkWj0QriPaZagYyVD90T2vmeLrCZOPfpzufwzghBPh9Uk'
-TOKEN_KEY = '745349279326281730-vx9LQIJpJsbEsa0WUdoKn9TrmTUBqee'
-TOKEN_SERCRET = '631dYS20bMctP7UIEbZwUZQZDx9KTVNbO6azaZT86NiNj'
+API_KEY = 'KLgeXShNvyawbCF68xIQnxQ7I'
+API_SECRET = 'm9tqmRVGV2kMSa2Fp6ges4QpTd4cauhXlIi1sb19OclUO2OYpv'
+TOKEN_KEY = '745349279326281730-jK28eboGXFXeSUU4toHhugXJA4aoMVd'
+TOKEN_SERCRET = '7vLVLcnH6YFBGTplllKxH4INZYXSbbTWyk3KsQwsjPoTY'
 
 url_pattern = "https://api.twitter.com/1.1/search/tweets.json?q=%23{}&lang=en&result_type=popular&count=20"
 
