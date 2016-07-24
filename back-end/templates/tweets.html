@@ -60,6 +60,8 @@
                 <h3> Hello [{{ user_data['screen_name'] }}]</h3>
                 <p>You following {{ user_data['following_count'] }} accounts.</p>
                 <p>You have {{ user_data['followers_count'] }} followers.</p>
+                <p>Statuses count {{ user_data['statuses_count'] }}.</p>
+                <!--p>Retweets count {{ user_data['retweet_count'] }}.</p-->
                 <a class="btn btn-primary" href="/logout">Logout</a>
             {% else %}
                 <a class="btn btn-primary" href="/login">Login</a>
@@ -69,7 +71,7 @@
             <div class="col-md-6 col-md-offset-3">
                 <h3>Vote blox</h3>
                 <h4>Your political influence changes with your actions</h4>
-                <h4>Your current average participation score is 580</h4>
+                <h4>Your current average participation score is {{ user_data['political_scope'] }}</h4>
                 <h4>Invite others to join your block</h4>
                 <p>Tell us who you support</p>
 

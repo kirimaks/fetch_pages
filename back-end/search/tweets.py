@@ -54,10 +54,17 @@ screen_name={}".format(user_name)
     data = json.loads(data)
 
     # Need to handle errors from api here...
+    #print(data)
 
     buff = dict()
     buff['followers_count'] = data['followers_count']
     buff['following_count'] = data['friends_count']
     buff['screen_name'] = data['screen_name']
+    buff['statuses_count'] = data['statuses_count']
+
+    #buff['retweet_count'] = data['status']['retweet_count']
+
+    buff['political_scope'] = 1.2 * (float(buff['followers_count']) +
+                                     float(buff['following_count']))
 
     return buff
