@@ -4,9 +4,10 @@ import json
 API_KEY = 'KLgeXShNvyawbCF68xIQnxQ7I'
 API_SECRET = 'm9tqmRVGV2kMSa2Fp6ges4QpTd4cauhXlIi1sb19OclUO2OYpv'
 TOKEN_KEY = '745349279326281730-jK28eboGXFXeSUU4toHhugXJA4aoMVd'
-TOKEN_SERCRET = '7vLVLcnH6YFBGTplllKxH4INZYXSbbTWyk3KsQwsjPoTY'
+TOKEN_SECRET = '7vLVLcnH6YFBGTplllKxH4INZYXSbbTWyk3KsQwsjPoTY'
 
-url_pattern = "https://api.twitter.com/1.1/search/tweets.json?q=%23{}&lang=en&result_type=popular&count=20"
+url_pattern = "https://api.twitter.com/1.1/search/tweets.json?\
+q=%23{}&lang=en&result_type=popular&count=20"
 
 
 def oauth_req(url, key, secret, http_method="GET",
@@ -28,7 +29,7 @@ def get_tweets(tag):
         tag = tag.lstrip("#")
 
     url = url_pattern.format(tag)
-    data = oauth_req(url, TOKEN_KEY, TOKEN_SERCRET)
+    data = oauth_req(url, TOKEN_KEY, TOKEN_SECRET)
     buff = list()
 
     for status in json.loads(data)['statuses']:
@@ -40,7 +41,23 @@ def get_tweets(tag):
 def search_users(name):
     if name:
         url = "https://api.twitter.com/1.1/users/search.json?q={}".format(name)
-        data = oauth_req(url, TOKEN_KEY, TOKEN_SERCRET)
+        data = oauth_req(url, TOKEN_KEY, TOKEN_SECRET)
         users = [user['screen_name'] for user in json.loads(data)]
         return users[:12]
     return []
+
+
+def get_user_info(user_name):
+    url = "https://api.twitter.com/1.1/users/show.json?\
+screen_name={}".format(user_name)
+    data = oauth_req(url, TOKEN_KEY, TOKEN_SECRET)
+    data = json.loads(data)
+
+    # Need to handle errors from api here...
+
+    buff = dict()
+    buff['followers_count'] = data['followers_count']
+    buff['following_count'] = data['friends_count']
+    buff['screen_name'] = data['screen_name']
+
+    return buff

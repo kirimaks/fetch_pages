@@ -56,8 +56,10 @@
   <body>
     <div class="container">
         <div class="row">
-            {% if user_name %}
-                <h3> Hello [{{ user_name }}]</h3>
+            {% if user_data %}
+                <h3> Hello [{{ user_data['screen_name'] }}]</h3>
+                <p>You following {{ user_data['following_count'] }} accounts.</p>
+                <p>You have {{ user_data['followers_count'] }} followers.</p>
                 <a class="btn btn-primary" href="/logout">Logout</a>
             {% else %}
                 <a class="btn btn-primary" href="/login">Login</a>

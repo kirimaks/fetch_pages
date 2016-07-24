@@ -6,7 +6,7 @@ import urlparse
 
 from search.people_search import PeopleSearch
 from search.group_search import GroupSearch
-from search.tweets import search_users
+from search.tweets import search_users, get_user_info
 
 app = Flask(__name__)
 
@@ -14,8 +14,11 @@ app = Flask(__name__)
 # Twitter test
 import oauth2
 
-CONS_KEY = "KLgeXShNvyawbCF68xIQnxQ7I"
-CONS_SECRET = "m9tqmRVGV2kMSa2Fp6ges4QpTd4cauhXlIi1sb19OclUO2OYpv"
+CONS_KEY = "KLgeXShNvyawbCF68xIQnxQ7I"    # Public api.
+#CONS_KEY = "ElBHq7mwPAIToQDPsuWd3HZia"      # Test api.
+
+CONS_SECRET = "m9tqmRVGV2kMSa2Fp6ges4QpTd4cauhXlIi1sb19OclUO2OYpv"    # Pub
+#CONS_SECRET = "6kJBDAtaKUdd2FSw7HMXovVyY3HEIWwMatk56Mm63Tn3ThuT6i"      # Test
 
 consumer = oauth2.Consumer(CONS_KEY, CONS_SECRET)
 client = oauth2.Client(consumer)
@@ -58,11 +61,14 @@ def tweets():
     name = request.args.get("name")
 
     # Get username or display log in button.
-    user_name = request.cookies.get("user_name")
+    user_name = request.cookies.get("user_name", None)
+    user_data = None
+    if user_name:
+        user_data = get_user_info(user_name)
 
     # Search in twitter api.
     users = search_users(name)
-    return render_template("tweets.html", users=users, user_name=user_name)
+    return render_template("tweets.html", users=users, user_data=user_data)
 
 
 @app.route("/login")
