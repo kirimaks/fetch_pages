@@ -5,9 +5,6 @@
         #tag-cloud {
             height: 300px;
             width: 500px;
-            /*
-            border:1px dashed black;
-            */
             margin-left:auto;
             margin-right:auto;
         }
@@ -15,22 +12,16 @@
             float:right;
         }
         #list {
-            /*
-            display:table;
-            border-collapse:separate;
-            border-spacing:5px;
-            */
             margin:5px;
         }
         .box {
-            /*
-            display:table-cell;
-            border:1px solid black;
-            */
             float:left;
         }
         .twitter-follow-button {
             display:block;
+        }
+        .btn-block {
+            margin-bottom:15px;
         }
     </style>
 {% endblock %}
@@ -69,32 +60,44 @@
         </div>
 
         <div class="row" style="margin-top:5px;">
-            <div class="col-md-4 col-md-offset-2" style="">
+            <div class="col-md-4 col-md-offset-2 well" style="">
                 <h4>Presidential Elections:</h4>
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/realDonaldTrump">
                     Tweets by realDonaldTrump</a> 
 
                 {% if user_data %}
-                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse1') }}">Endorse</a>
+                    <p class="btn-block">
+                        <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse1') }}">Endorse</a>
+                        <a class="btn btn-success" href="#">Check-in and Vote</a>
+                    </p>
                 {% endif %}
 
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/HillaryClinton">
                     Tweets by HillaryClinton</a> 
 
                 {% if user_data %}
-                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse2') }}">Endorse</a>
+                    <p class="btn-block">
+                        <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse2') }}">Endorse</a>
+                        <a class="btn btn-success" href="#">Check-in and Vote</a>
+                    </p>
                 {% endif %}
             </div>
 
-            <div class="col-md-4" style="">
+            <div class="col-md-4 well" style="">
                 <h4>Congressional Elections:</h4>
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/joekennedy">Tweets by joekennedy</a> 
                 {% if user_data %}
-                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse3') }}">Endorse</a>
+                    <p class="btn-block">
+                        <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse3') }}">Endorse</a>
+                        <a class="btn btn-success" href="#">Check-in and Vote</a>
+                    </p>
                 {% endif %}
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/RepKClark">Tweets by RepKClark</a>
                 {% if user_data %}
-                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse4') }}">Endorse</a>
+                    <p class="btn-block">
+                        <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse4') }}">Endorse</a>
+                        <a class="btn btn-success" href="#">Check-in and Vote</a>
+                    </p>
                 {% endif %}
             </div>
         </div>
@@ -105,9 +108,17 @@
         <div class="col-md-12 panel" id="list">
             {% for user in users %}
             <div class='box'>
+                {% if user_data %}
+                    <p>
+                      <a class="btn btn-primary btn-xs" href="{{ url_for('tweets.post_tweet', text='Endorse') }}">Endorse</a>
+                      <a class="btn btn-success btn-xs" href="{{ url_for('tweets.post_tweet', text='Endorse') }}">Invite</a>
+                    </p>
+                {% endif %}
+
                 <a href="https://twitter.com/{{ user }}" class="twitter-follow-button" data-show-count="true">
                     Follow @{{ user }}
                 </a>
+
                 <a class="twitter-timeline" data-width="260" data-height="300" data-theme="light" href="https://twitter.com/{{ user }}">
                     {{ user }}
                 </a>
