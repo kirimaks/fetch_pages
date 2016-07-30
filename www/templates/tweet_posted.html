@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if errors %}
+    {% for error in errors['errors'] %}
+        <h4>Error</h4>
+        <p>Code: <strong>{{ error['code'] }}</strong></p>
+        <p>Message: <strong>{{ error['message'] }}</strong></p>
+    {% endfor %}
+{% else %}
+    <h4>Message was posted, no errors.</h4>
+{% endif %}
+
+<p><a class="bnt bnt-primary" href="{{ url_for('tweets.tweets') }}">Go back</a></p>
+{% endblock %}

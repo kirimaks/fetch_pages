@@ -91,17 +91,33 @@
                 <h4>Presidential Elections:</h4>
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/realDonaldTrump">
                     Tweets by realDonaldTrump</a> 
+
+                {% if user_data %}
+                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse1') }}">Endorse</a>
+                {% endif %}
+
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/HillaryClinton">
                     Tweets by HillaryClinton</a> 
 
+                {% if user_data %}
+                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse2') }}">Endorse</a>
+                {% endif %}
             </div>
+
             <div class="col-md-4" style="">
                 <h4>Congressional Elections:</h4>
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/joekennedy">Tweets by joekennedy</a> 
+                {% if user_data %}
+                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse3') }}">Endorse</a>
+                {% endif %}
                 <a class="twitter-timeline" data-width="400" data-height="200" href="https://twitter.com/RepKClark">Tweets by RepKClark</a>
+                {% if user_data %}
+                <a class="btn btn-primary" href="{{ url_for('tweets.post_tweet', text='Endorse4') }}">Endorse</a>
+                {% endif %}
             </div>
         </div>
         
+
         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
         <div class="col-md-12 panel" id="list">

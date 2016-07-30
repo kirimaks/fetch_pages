@@ -23,13 +23,13 @@ function write_tags(json_url, div_id) {
 }
 
 function group_search(pattern) {
-    var my_url = "/group_search/" + pattern;
+    var my_url = "/search/group_search/" + pattern;
     console.log(my_url);
     write_tags(my_url, "#tag-cloud");
 }
 
 function org_search(name) {
-    var my_url = "/org_search/" + name;
+    var my_url = "/search/org_search/" + name;
     console.log("Request to: " + my_url);
     write_tags(my_url, "#tag-cloud");
 }

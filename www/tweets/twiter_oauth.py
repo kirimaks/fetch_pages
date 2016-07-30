@@ -1,10 +1,16 @@
 import oauth2
 import json
+import urllib
+import os
+from main.config import config
 
-API_KEY = 'KLgeXShNvyawbCF68xIQnxQ7I'
-API_SECRET = 'm9tqmRVGV2kMSa2Fp6ges4QpTd4cauhXlIi1sb19OclUO2OYpv'
-TOKEN_KEY = '745349279326281730-jK28eboGXFXeSUU4toHhugXJA4aoMVd'
-TOKEN_SECRET = '7vLVLcnH6YFBGTplllKxH4INZYXSbbTWyk3KsQwsjPoTY'
+conf_name = os.environ.get("FLASK_CONFIG", "default")
+
+API_KEY = config[conf_name].CONS_KEY
+API_SECRET = config[conf_name].CONS_SECRET
+TOKEN_KEY = config[conf_name].TOKEN_KEY
+TOKEN_SECRET = config[conf_name].TOKEN_SECRET
+
 
 url_pattern = "https://api.twitter.com/1.1/search/tweets.json?\
 q=%23{}&lang=en&result_type=popular&count=20"
@@ -54,7 +60,7 @@ screen_name={}".format(user_name)
     data = json.loads(data)
 
     # Need to handle errors from api here...
-    #print(data)
+    # print(data)
 
     buff = dict()
     buff['followers_count'] = data['followers_count']
@@ -62,9 +68,24 @@ screen_name={}".format(user_name)
     buff['screen_name'] = data['screen_name']
     buff['statuses_count'] = data['statuses_count']
 
-    #buff['retweet_count'] = data['status']['retweet_count']
+    # buff['retweet_count'] = data['status']['retweet_count']
 
     buff['political_scope'] = 1.2 * (float(buff['followers_count']) +
                                      float(buff['following_count']))
 
     return buff
+
+
+def post_new_tweet(text, oauth_token, oauth_token_secret):
+    assert(oauth_token)
+    assert(oauth_token_secret)
+
+    url = "https://api.twitter.com/1.1/statuses/update.json"
+    post_body = "status={}".format(urllib.quote_plus(text))
+
+    data = oauth_req(url, oauth_token,
+                     oauth_token_secret,
+                     http_method="POST",
+                     post_body=post_body)
+
+    return data

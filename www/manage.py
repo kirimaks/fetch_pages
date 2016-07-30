@@ -1,0 +1,1 @@
+main/manage.py
