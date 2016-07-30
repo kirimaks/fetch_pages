@@ -31,7 +31,7 @@ def post_tweet(text):
 
     api_resp = json.loads(api_resp)
 
-    print(api_resp, type(api_resp))
+    #print(api_resp, type(api_resp))
 
     # {"errors":[{"code":187,"message":"Status is a duplicate."}]}
     errors = None
