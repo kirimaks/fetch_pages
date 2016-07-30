@@ -1,3 +1,4 @@
 *.pyc
 *.pyo
 www/static/bower_components/
+www/conf/uwsgi.ini

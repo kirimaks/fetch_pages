@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from config import config, BasicConfig
+from .config import config, BasicConfig
 from search import search_app
 from tweets import tweets_app
 from login import login_app
