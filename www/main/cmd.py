@@ -1,8 +1,8 @@
-import os
 from flask_script import Command
+import subprocess
 
 
 class CmdUwsgi(Command):
     def run(self):
-        print("Run uwsgi!")
-        os.system("uwsgi --ini conf/uwsgi.ini")
+        cmd = ['uwsgi', '--ini', 'conf/uwsgi.ini']
+        subprocess.Popen(cmd)
